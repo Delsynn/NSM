@@ -1,3 +1,8 @@
 Location prometheus.yaml = /var/snap/prometheus/current
 
-https://prometheus.io/docs/guides/node-exporter/
+install node_exporter on prometheus:
+    https://prometheus.io/docs/guides/node-exporter/
+
+install Grafana
+    https://grafana.com/grafana/download
+    https://grafana.com/docs/grafana/latest/datasources/prometheus/#configure-the-data-source
