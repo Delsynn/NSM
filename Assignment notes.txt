@@ -1,1 +1,3 @@
 Location prometheus.yaml = /var/snap/prometheus/current
+
+https://prometheus.io/docs/guides/node-exporter/
