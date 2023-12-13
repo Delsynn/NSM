@@ -1,0 +1,1 @@
+Location prometheus.yaml = /var/snap/prometheus/current
