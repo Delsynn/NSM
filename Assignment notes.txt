@@ -1,5 +1,9 @@
 Location prometheus.yaml = /var/snap/prometheus/current
 
+standard ports:
+prometheus 9090
+node_exporter 9100
+grafana 3000
 
 install node_exporter on prometheus:
     https://prometheus.io/docs/guides/node-exporter/
