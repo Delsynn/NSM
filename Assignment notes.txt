@@ -9,4 +9,5 @@ install node_exporter on prometheus:
 
 install Grafana
     https://grafana.com/grafana/download
+    https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
     https://grafana.com/docs/grafana/latest/datasources/prometheus/#configure-the-data-source
