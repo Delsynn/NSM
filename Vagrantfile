@@ -1,28 +1,30 @@
 Vagrant.configure("2") do |config|
   # Master machine
   config.vm.define "master" do |master|
-    master.vm.box = "delsynn/ubuntuliveprometheus"
-    master.vm.box_version = "1.1.0"
+    master.vm.box = "bento/ubuntu-16.04"
     master.vm.network "private_network", ip: "192.168.50.4"
     master.vm.network "forwarded_port", guest: 3000, host: 3000
     master.vm.network "forwarded_port", guest: 9090, host: 9090
     master.vm.network "forwarded_port", guest: 9100, host: 9100
     master.vm.synced_folder ".", "/home/vagrant"
     master.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
-      vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-      vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
       vb.gui = true
-      vb.memory = "4096"
+      vb.memory = "2048"
       vb.cpus = 2
     end
     master.vm.provision "shell", inline: <<-SHELL
       echo "Running shell commands on master..."
-      echo apt-get update
-      sudo cp -f /home/vagrant/prometheus.yml /var/snap/prometheus/current/
-      sudo snap restart prometheus.prometheus
+      sudo apt-get install prometheus -y
+      sudo systemctl enable prometheus
+      sudo systemctl start prometheus
+      sudo cp -f /home/vagrant/prometheus.yml /etc/prometheus
+      sudo systemctl restart prometheus
+      sudo apt-get install -y adduser libfontconfig1 musl
+      wget https://dl.grafana.com/enterprise/release/grafana-enterprise_10.2.2_amd64.deb
+      sudo dpkg -i grafana-enterprise_10.2.2_amd64.deb
+      sudo systemctl enable grafana-server
       sudo systemctl start grafana-server
-      sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+      wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
       sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
       cd node_exporter-1.7.0.linux-amd64
       sudo ./node_exporter
