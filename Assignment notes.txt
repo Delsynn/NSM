@@ -1,3 +1,8 @@
+How to create a vagrant box:
+
+https://www.youtube.com/watch?v=Wqtlj9osK0g
+
+
 Location prometheus.yaml = /var/snap/prometheus/current
 
 standard ports:
