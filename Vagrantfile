@@ -24,8 +24,7 @@ Vagrant.configure("2") do |config|
       sudo snap restart prometheus
       sudo systemctl enable grafana-server
       sudo systemctl start grafana-server
-      sudo mkdir /home/vagrant/downloads
-      cd /home/vagrant/downloads
+      cd /tmp
       wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
       tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
       sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
@@ -42,6 +41,9 @@ Vagrant.configure("2") do |config|
     slave1.vm.network "private_network", ip: "192.168.50.5"
     slave1.vm.synced_folder "./configs", "/home/vagrant"
     slave1.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+      vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+      vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
       vb.gui = false
       vb.memory = "2048"
       vb.cpus = 2
@@ -50,6 +52,7 @@ Vagrant.configure("2") do |config|
       echo "Running shell commands on slave1..."
       sudo apt-get update
       sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
+      cd /tmp
       sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
       sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
       sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
@@ -66,6 +69,9 @@ Vagrant.configure("2") do |config|
     slave2.vm.network "private_network", ip: "192.168.50.6"
     slave2.vm.synced_folder "./configs", "/home/vagrant"
     slave2.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+      vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+      vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
       vb.gui = false
       vb.memory = "2048"
       vb.cpus = 2
@@ -74,6 +80,7 @@ Vagrant.configure("2") do |config|
       echo "Running shell commands on slave2..."
       sudo apt-get update
       sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
+      cd /tmp
       sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
       sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
       sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
