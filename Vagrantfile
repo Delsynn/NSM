@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
     master.vm.network "forwarded_port", guest: 9090, host: 9090
     master.vm.network "forwarded_port", guest: 9100, host: 9100
     master.vm.synced_folder "./configs", "/home/vagrant"
-    master.vm.provider :virtualbox do |vb|
+    master.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
       vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
       vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
     slave1.vm.box = "bento/ubuntu-16.04"
     slave1.vm.network "private_network", ip: "192.168.50.5"
     slave1.vm.synced_folder "./configs", "/home/vagrant"
-    slave1.vm.provider :virtualbox do |vb|
+    slave1.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
       vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
       vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
     slave2.vm.box = "bento/ubuntu-16.04"
     slave2.vm.network "private_network", ip: "192.168.50.6"
     slave2.vm.synced_folder "./configs", "/home/vagrant"
-    slave2.vm.provider :virtualbox do |vb|
+    slave2.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
       vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
       vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
