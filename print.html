@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introductie.html">Introductie</a></li><li class="chapter-item expanded affix "><a href="box.html">Aanmaken monitor box</a></li><li class="chapter-item expanded affix "><a href="vagrantfile.html">Aanmaken van Vagrantfile</a></li><li class="chapter-item expanded affix "><a href="totslot.html">Tot slot</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introductie.html">Introductie</a></li><li class="chapter-item expanded affix "><a href="box.html">Aanmaken monitor box</a></li><li class="chapter-item expanded affix "><a href="vagrantfile.html">Aanmaken van Vagrantfile</a></li><li class="chapter-item expanded affix "><a href="totslot.html">Tot slot</a></li><li class="chapter-item expanded affix "><a href="sources.html">Bronnen</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -562,6 +562,7 @@ Wanneer we deze repository pullen krijgen we 3 mappen:</p>
 </code></pre>
 <p>Hierna zullen alle machines in de Vagrantfile opstarten en alle commando's worden uitgevoerd.</p>
 <p>Eenmaal de volledige file doorlopen, zijn er dus drie machines lopende, een monitoring machine die de twee slave machines scraped/monitored.</p>
+<p>De rede waarom wij node exporter opstarten als dienst op elke machine is omdat node exporter zal luisteren op poort 9100 naar de scrape requests (http) die Prometheus zal uitsturen en dan erop antwoorden met de metrics van deze machine.</p>
 <p>We kunnen dan de volgende diensten van de monitor machine via onze lokale webbrowser bereiken:</p>
 <ul>
 <li>Prometheus op localhost:9090</li>
@@ -569,7 +570,17 @@ Wanneer we deze repository pullen krijgen we 3 mappen:</p>
 <li>Grafana op localhost:3000</li>
 </ul>
 <p>Als we de Prometheus interface bezoeken zal men onder targets zien dat deze zowel zichzelf als de twee slave machines aan het scrapen/monitoren is.</p>
-<p>Indien men de gescrapte metrics wil visualiseren kan men naar Grafana gaan, en deze instellen met als data source Prometheus na welke men de verschillende gescrapte metrics kan visualiseren.</p>
+<p>Indien men de gescrapete metrics wil visualiseren kan men naar Grafana gaan, en deze instellen met als data source Prometheus. Hierna kan men de verschillende gescrapete metrics dan visualiseren.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bronnen"><a class="header" href="#bronnen">Bronnen</a></h1>
+<ul>
+<li>Officiële Ubuntu Site: https://ubuntu.com/download/server</li>
+<li>Youtube video over het maken van een Vagrant box: https://www.youtube.com/watch?v=Wqtlj9osK0g</li>
+<li>Officiële Prometheus Site: https://prometheus.io/docs/prometheus/latest/getting_started/</li>
+<li>Officiële Grafana Site: https://grafana.com/grafana/download</li>
+<li>VMWare Docs voor het installeren van Node Exporter als service: https://docs.vmware.com/en/VMware-vRealize-Operations-Management-Pack-for-Kubernetes/1.8.1/management-pack-for-kubernetes/GUID-A1B68BE5-EF38-48E1-AA80-FD71E6F19989.html</li>
+<li>Vagrant Cloud: https://app.vagrantup.com/boxes/search</li>
+</ul>
+<p>En nog enkele websites hier en daar voor de correcte syntax voor enkele lijnen in de Vagrantfile.</p>
 
                     </main>
 
