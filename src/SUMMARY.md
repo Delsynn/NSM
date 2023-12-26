@@ -5,11 +5,11 @@
 # Installatie
 
 - [Aanmaak Vagrant Box](box.md)
-    - [Aanmaak VM](#aanmaak-vm)
-    - [Installatie VM](#installatie-vm)
-    - [Voorbereiding conversie](#voorbereiding-conversie)
-    - [Applicaties](#applicaties)
-    - [Conversie](#conversie)
+    - [Aanmaak VM](box.md#aanmaak-vm)
+    - [Installatie VM](box.md#installatie-vm)
+    - [Voorbereiding conversie](box.md#voorbereiding-conversie)
+    - [Applicaties](box.md#applicaties)
+    - [Conversie](box.md#conversie)
 - [Reading Books](anothertest.md)
 - [Creating a Book](guide/creating.md)
 
