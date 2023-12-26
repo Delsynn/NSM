@@ -99,6 +99,7 @@ Om de volledige opzet te laten werken zijn we na veel testen en aanpassen van de
       end
     end
 ```
+## Master Box
 
 Bij de monitoring machine (master) kan men zien dat wij onze zelfgemaakte box gaan downloaden:
 
@@ -218,6 +219,41 @@ Zoals men kan zien doen wij de volgende zaken:
 - En we starten grafana-server op.
 - Dan gaan wij in de /tmp folder om node exporter te downloaden, dit zodat deze file niet steeds wordt gedownload in de gesyncte folder.
 - We downloaden, extracten, en verplaatsten de node exporter applicatie naar de correcte folder (/usr/local/bin)
+- Een system user wordt aangemaakt voor de uitvoeren van de node_exporter service.
 - We herladen de systemd manager configuratie zodat de node_exporter.service file werkt.
 - En zorgen dat de node-exporter service ook opstart bij het rebooten van de machine.
 - We starten dan uiteindelijk de node-exporter service op.
+
+## Slave boxes
+
+De enige verschillen bij de slave boxes is dat we gebruik maken van een generieke ubuntu box die wij op Vagrant Cloud hebben gevonden. Een ip in hetzelfde subnet as de master box eraan toekennen en dezelfde commando's uitvoeren als op de master box om de node_exporter service op deze machines op te starten.
+
+```
+      # Slave machine 1
+      config.vm.define "slave1" do |slave1|
+        slave1.vm.box = "bento/ubuntu-16.04"
+        slave1.vm.network "private_network", ip: "192.168.50.5"
+        slave1.vm.synced_folder "./configs", "/home/vagrant"
+        slave1.vm.provider "virtualbox" do |vb|
+          vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+          vb.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
+          vb.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+          vb.gui = false
+          vb.memory = "2048"
+          vb.cpus = 2
+        end
+        slave1.vm.provision "shell", inline: <<-SHELL
+          echo "Running shell commands on slave1..."
+          sudo apt-get update
+          sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
+          cd /tmp
+          sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
+          sudo useradd -rs /bin/false node_exporter
+          sudo systemctl daemon-reload
+          sudo systemctl start node_exporter
+          sudo systemctl enable node_exporter
+        SHELL
+      end
+```
