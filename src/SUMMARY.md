@@ -5,7 +5,7 @@
 # Installatie
 
 - [Aanmaken monitor box](box.md)
-    - [Aanmaak VM](https://delsynn.github.io/NSM/box.html#aanmaak-vm)
+    - [Aanmaak VM](box.md#aanmaak-vm)
     - [Installatie VM](https://delsynn.github.io/NSM/box.html#installatie-vm)
     - [Voorbereiding conversie](https://delsynn.github.io/NSM/box.html#voorbereiding-conversie)
     - [Installatie applicaties](https://delsynn.github.io/NSM/box.html#applicaties)
