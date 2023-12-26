@@ -18,6 +18,8 @@ Hierna zullen alle machines in de Vagrantfile opstarten en alle commando's worde
 
 Eenmaal de volledige file doorlopen, zijn er dus drie machines lopende, een monitoring machine die de twee slave machines scraped/monitored.
 
+De rede waarom wij node exporter opstarten als dienst op elke machine is omdat node exporter zal luisteren op poort 9100 naar de scrape requests (http) die Prometheus zal uitsturen en dan erop antwoorden met de metrics van deze machine.
+
 We kunnen dan de volgende diensten van de monitor machine via onze lokale webbrowser bereiken:
 - Prometheus op localhost:9090
 - Node Exporter op localhost:9100
@@ -25,4 +27,4 @@ We kunnen dan de volgende diensten van de monitor machine via onze lokale webbro
 
 Als we de Prometheus interface bezoeken zal men onder targets zien dat deze zowel zichzelf als de twee slave machines aan het scrapen/monitoren is.
 
-Indien men de gescrapte metrics wil visualiseren kan men naar Grafana gaan, en deze instellen met als data source Prometheus na welke men de verschillende gescrapte metrics kan visualiseren.
+Indien men de gescrapete metrics wil visualiseren kan men naar Grafana gaan, en deze instellen met als data source Prometheus. Hierna kan men de verschillende gescrapete metrics dan visualiseren.
