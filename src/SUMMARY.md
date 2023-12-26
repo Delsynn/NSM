@@ -5,11 +5,11 @@
 # Installatie
 
 - [Aanmaak Vagrant Box](box.md)
-    - <a href="#aanmaak-vm" data-mdbook="ignore">Aanmaak VM</a>
-    - <a href="#installatie-vm">Installatie VM</a>
-    - <a href="#voorbereiding-conversie">Voorbereiding conversie</a>
-    - <a href="#applicaties">Applicaties</a>
-    - <a href="#conversie">Conversie</a>
+    - [Aanmaak VM](#aanmaak-vm)
+    - [Installatie VM](#installatie-vm)
+    - [Voorbereiding conversie](#voorbereiding-conversie)
+    - [Applicaties](#applicaties)
+    - [Conversie](#conversie)
 - [Reading Books](anothertest.md)
 - [Creating a Book](guide/creating.md)
 
