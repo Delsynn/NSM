@@ -64,7 +64,7 @@ In de video legde men uit, dat voor een succesvol werkende box aan te maken wij 
 
         ```
         $ mkdir -m 700 .ssh
-        $ wget -O .ssh/authorized_keys https://raw.$ githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
+        $ wget -O .ssh/authorized_keys https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
         $ cat .ssh/authorized_keys
         $ chmod 600 .ssh/authorized_keys
         ```
