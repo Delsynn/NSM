@@ -5,7 +5,7 @@
 # Installatie
 
 - [Aanmaak Vagrant Box](box.md)
-    - <a href="#aanmaak-vm"> Aanmaak VM</a>
+    - <a href="#aanmaak-vm" data-mdbook="ignore">Aanmaak VM</a>
     - <a href="#installatie-vm">Installatie VM</a>
     - <a href="#voorbereiding-conversie">Voorbereiding conversie</a>
     - <a href="#applicaties">Applicaties</a>
