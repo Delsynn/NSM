@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introductie.html">Introductie</a></li><li class="chapter-item expanded affix "><a href="box.html">Aanmaken monitor box</a></li><li class="chapter-item expanded affix "><a href="vagrantfile.html">Aanmaken van Vagrantfile</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introductie.html">Introductie</a></li><li class="chapter-item expanded affix "><a href="box.html">Aanmaken monitor box</a></li><li class="chapter-item expanded affix "><a href="vagrantfile.html">Aanmaken van Vagrantfile</a></li><li class="chapter-item expanded affix "><a href="totslot.html">Tot slot</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -414,6 +414,7 @@ Box Architecture: unknown
       end
     end
 </code></pre>
+<h2 id="master-box"><a class="header" href="#master-box">Master Box</a></h2>
 <p>Bij de monitoring machine (master) kan men zien dat wij onze zelfgemaakte box gaan downloaden:</p>
 <pre><code>master.vm.box = &quot;delsynn/ubuntuliveprometheus&quot;
 </code></pre>
@@ -512,10 +513,63 @@ WantedBy=multi-user.target
 <li>En we starten grafana-server op.</li>
 <li>Dan gaan wij in de /tmp folder om node exporter te downloaden, dit zodat deze file niet steeds wordt gedownload in de gesyncte folder.</li>
 <li>We downloaden, extracten, en verplaatsten de node exporter applicatie naar de correcte folder (/usr/local/bin)</li>
+<li>Een system user wordt aangemaakt voor de uitvoeren van de node_exporter service.</li>
 <li>We herladen de systemd manager configuratie zodat de node_exporter.service file werkt.</li>
 <li>En zorgen dat de node-exporter service ook opstart bij het rebooten van de machine.</li>
 <li>We starten dan uiteindelijk de node-exporter service op.</li>
 </ul>
+<h2 id="slave-boxes"><a class="header" href="#slave-boxes">Slave boxes</a></h2>
+<p>De enige verschillen bij de slave boxes is dat we gebruik maken van een generieke ubuntu box die wij op Vagrant Cloud hebben gevonden. Een ip in hetzelfde subnet as de master box eraan toekennen en dezelfde commando's uitvoeren als op de master box om de node_exporter service op deze machines op te starten.</p>
+<pre><code>      # Slave machine 1
+      config.vm.define &quot;slave1&quot; do |slave1|
+        slave1.vm.box = &quot;bento/ubuntu-16.04&quot;
+        slave1.vm.network &quot;private_network&quot;, ip: &quot;192.168.50.5&quot;
+        slave1.vm.synced_folder &quot;./configs&quot;, &quot;/home/vagrant&quot;
+        slave1.vm.provider &quot;virtualbox&quot; do |vb|
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--cableconnected1&quot;, &quot;on&quot;]
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--uart1&quot;, &quot;0x3F8&quot;, &quot;4&quot;]
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--uartmode1&quot;, &quot;file&quot;, File::NULL]
+          vb.gui = false
+          vb.memory = &quot;2048&quot;
+          vb.cpus = 2
+        end
+        slave1.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
+          echo &quot;Running shell commands on slave1...&quot;
+          sudo apt-get update
+          sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
+          cd /tmp
+          sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
+          sudo useradd -rs /bin/false node_exporter
+          sudo systemctl daemon-reload
+          sudo systemctl start node_exporter
+          sudo systemctl enable node_exporter
+        SHELL
+      end
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tot-slot"><a class="header" href="#tot-slot">Tot slot</a></h1>
+<p>Nog even wat over de folder opbouw. Heel deze opdracht is opgeladen op Github.
+Wanneer we deze repository pullen krijgen we 3 mappen:</p>
+<ul>
+<li>De .github folder met de workflow voor het aanmaken van de statische documentatie website die u hier ziet.</li>
+<li>De configs folder waarin de te kopïeren bestanden staan, deze folder syncen wij met de machines die we opstarten met de Vagrantfile.</li>
+<li>En de src folder, hierin staan de markdown bestanden waaruit deze site wordt opgemaakt.</li>
+</ul>
+<p>Dan in de root van de repository staat de Vagrantfile, een diagram in draw.io over onze opzet en de capture van het scrapen dat door prometheus wordt uitgevoerd.</p>
+<p>Eenmaal deze repository gepulled is kunnen wij in de NSM folder gaan en het volgende commando uitvoeren:</p>
+<pre><code>vagrant up
+</code></pre>
+<p>Hierna zullen alle machines in de Vagrantfile opstarten en alle commando's worden uitgevoerd.</p>
+<p>Eenmaal de volledige file doorlopen, zijn er dus drie machines lopende, een monitoring machine die de twee slave machines scraped/monitored.</p>
+<p>We kunnen dan de volgende diensten van de monitor machine via onze lokale webbrowser bereiken:</p>
+<ul>
+<li>Prometheus op localhost:9090</li>
+<li>Node Exporter op localhost:9100</li>
+<li>Grafana op localhost:3000</li>
+</ul>
+<p>Als we de Prometheus interface bezoeken zal men onder targets zien dat deze zowel zichzelf als de twee slave machines aan het scrapen/monitoren is.</p>
+<p>Indien men de gescrapte metrics wil visualiseren kan men naar Grafana gaan, en deze instellen met als data source Prometheus na welke men de verschillende gescrapte metrics kan visualiseren.</p>
 
                     </main>
 

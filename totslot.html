@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introductie</title>
+        <title>Tot slot</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introductie.html" class="active">Introductie</a></li><li class="chapter-item expanded affix "><a href="box.html">Aanmaken monitor box</a></li><li class="chapter-item expanded affix "><a href="vagrantfile.html">Aanmaken van Vagrantfile</a></li><li class="chapter-item expanded affix "><a href="totslot.html">Tot slot</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introductie.html">Introductie</a></li><li class="chapter-item expanded affix "><a href="box.html">Aanmaken monitor box</a></li><li class="chapter-item expanded affix "><a href="vagrantfile.html">Aanmaken van Vagrantfile</a></li><li class="chapter-item expanded affix "><a href="totslot.html" class="active">Tot slot</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -173,20 +173,37 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introductie"><a class="header" href="#introductie">Introductie</a></h1>
-<p>Wij hebben gekozen om een monitoring omgeving op te zetten, volledig via het gebruik van Vagrant boxes.</p>
-<p>Deze omgeving omvat een monitor box die twee slave boxes monitored.</p>
-<p>Iets waarmee wij nog niet geëxperimenteerd hadden was het volledig opzetten van onze eigen box, dus wij besloten dan ook hiermee aan de slag te gaan.</p>
-<p>Onze keuze ging dus naar een Ubuntu Live server box die we zelf in elkaar hebben gestoken die we dan gebruiken om twee slaves nodes te monitoren waarvoor we een generieke Ubuntu box hebben gebruikt.</p>
+                        <h1 id="tot-slot"><a class="header" href="#tot-slot">Tot slot</a></h1>
+<p>Nog even wat over de folder opbouw. Heel deze opdracht is opgeladen op Github.
+Wanneer we deze repository pullen krijgen we 3 mappen:</p>
+<ul>
+<li>De .github folder met de workflow voor het aanmaken van de statische documentatie website die u hier ziet.</li>
+<li>De configs folder waarin de te kopïeren bestanden staan, deze folder syncen wij met de machines die we opstarten met de Vagrantfile.</li>
+<li>En de src folder, hierin staan de markdown bestanden waaruit deze site wordt opgemaakt.</li>
+</ul>
+<p>Dan in de root van de repository staat de Vagrantfile, een diagram in draw.io over onze opzet en de capture van het scrapen dat door prometheus wordt uitgevoerd.</p>
+<p>Eenmaal deze repository gepulled is kunnen wij in de NSM folder gaan en het volgende commando uitvoeren:</p>
+<pre><code>vagrant up
+</code></pre>
+<p>Hierna zullen alle machines in de Vagrantfile opstarten en alle commando's worden uitgevoerd.</p>
+<p>Eenmaal de volledige file doorlopen, zijn er dus drie machines lopende, een monitoring machine die de twee slave machines scraped/monitored.</p>
+<p>We kunnen dan de volgende diensten van de monitor machine via onze lokale webbrowser bereiken:</p>
+<ul>
+<li>Prometheus op localhost:9090</li>
+<li>Node Exporter op localhost:9100</li>
+<li>Grafana op localhost:3000</li>
+</ul>
+<p>Als we de Prometheus interface bezoeken zal men onder targets zien dat deze zowel zichzelf als de twee slave machines aan het scrapen/monitoren is.</p>
+<p>Indien men de gescrapte metrics wil visualiseren kan men naar Grafana gaan, en deze instellen met als data source Prometheus na welke men de verschillende gescrapte metrics kan visualiseren.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-
-                            <a rel="next prefetch" href="box.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                            <a rel="prev" href="vagrantfile.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
                             </a>
+
 
                         <div style="clear: both"></div>
                     </nav>
@@ -194,10 +211,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-
-                    <a rel="next prefetch" href="box.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                    <a rel="prev" href="vagrantfile.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
                     </a>
+
             </nav>
 
         </div>
