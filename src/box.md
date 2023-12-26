@@ -6,7 +6,9 @@ De volgende stap was onderzoeken hoe het aanmaken van Vagrant box juist in zijn 
 
 In de video legde men uit, dat voor een succesvol werkende box aan te maken wij de volgende zaken moesten doen:
 
-1. We beginnen wij het aanmaken van een virtuele machine in Virtualbox, bij het doorlopen van de creatie wizard is het belangrijk de volgende zaken te doen:
+1. ### Aanmaak VM 
+
+    We beginnen wij het aanmaken van een virtuele machine in Virtualbox, bij het doorlopen van de creatie wizard is het belangrijk de volgende zaken te doen:
 
     - Het kiezen van een duidelijke naam, dit hebben wij nodig bij het omzetten van de VM naar een box.
     - Dan het selecteren van Ubuntu server ISO waar men deze heeft opgeslagen.
@@ -15,7 +17,9 @@ In de video legde men uit, dat voor een succesvol werkende box aan te maken wij 
     - Hetzelfde kan gezegd worden voor CPU, dus kunnen we evengoed voor 2 CPU's gaan tijdens het testen van de machine.
     - En als laatste kunnen we nog onze opslagcapaciteit kiezen, hier kan men best voor een goede hoeveelheid gaan.
 
-2. Tijdens de installatie zijn er enkele zaken die wij zelf moeten kiezen, voornamelijk kunnen wij met de standaard keuzes gaan maar er zijn er enkele die wij best zelf kiezen namelijk:
+2. ### Installatie VM
+
+    Tijdens de installatie zijn er enkele zaken die wij zelf moeten kiezen, voornamelijk kunnen wij met de standaard keuzes gaan maar er zijn er enkele die wij best zelf kiezen namelijk:
 
     - Natuurlijk de taal, wij kozen voor English.
     - We werden gevraagd of wij de installer wensten te updaten, hievoor kozen wij ja.
@@ -31,7 +35,9 @@ In de video legde men uit, dat voor een succesvol werkende box aan te maken wij 
     - We kunnen al de OpenSSH server installeren, dit kunnen wij best doen want hier maakt Vagrant gebruik van wanneer wij via het "vagrant ssh" commando met een de box proberen te connecteren.
     - Dan als laatste krijgen we bij de Ubuntu Live server de keuze uit enkele "Featured Server Snaps". Dit zijn packages voor bepaalde veel gebruikte applicaties. Aangezien wij Prometheus als monitoring applicatie gingen gebruiken konden we deze al uit de lijst kiezen zodat de installatie hiervan al in orde was.
 
-3. Nu kunnen wij verder met het voorbereiden van de machine zodat deze kan geconverteerd worden naar een bruikbare, werkende box. Hiervoor konden we verder de video volgen:
+3. ### Voorbereiding conversie
+
+    Nu kunnen wij verder met het voorbereiden van de machine zodat deze kan geconverteerd worden naar een bruikbare, werkende box. Hiervoor konden we verder de video volgen:
 
     - Voor de eerste settings moeten we overschakelen naar de root user met het commando "sudo su -" We zullen voor het paswoord gevraagd worden, dus vagrant.
     - Hij raad aan om de commando's hostnamectl", "timedatectl" en "localectl uit te voeren om na te gaan of de instellingen qua hostnaam, tijd en locatie correct zijn. Deze kunnen nog veranderd worden indien nodig.
@@ -80,7 +86,10 @@ In de video legde men uit, dat voor een succesvol werkende box aan te maken wij 
         ```
     - Dit is alles wat nodig is om de basis template van de machine aan te maken en we kunnen nu overgaan tot het converteren van deze machine naar het vagrant box formaat.
 
-4. Dit is echter niet het moment waarop wij deze machine in box formaat converteren, wij wilden eerst de nodige applicaties installeren op deze machine, in ons geval dus nog de Grafana applicatie zodat wij de gescrapete metrics kunnen visualiseren.
+4. ### Applicaties
+    
+    Dit is echter niet het moment waarop wij deze machine in box formaat converteren, wij wilden eerst de nodige applicaties installeren op deze machine, in ons geval dus nog de Grafana applicatie zodat wij de gescrapete metrics kunnen visualiseren.
+
     - Hiervoor starten wij de machine terug op en op de root user voeren we de volgende commando's uit:
 
         ```
@@ -96,7 +105,9 @@ In de video legde men uit, dat voor een succesvol werkende box aan te maken wij 
         ```
     Dit is alles wat wij voor de monitoring box moeten voorbereiden aangezien Prometheus bij de installatie van de virtuele machine als is toegevoegd. Wij kunnen de Node Exporter module van Prometheus ook aan deze machine toevoegen zodat de machine zichzelf kan monitoren maar aangezien de installatie van Node Exporter op de slave machine via de Vagrantfile gebeurt (dit omdat we een al bestaande ubuntu box van vagrant cloud gebruiken) hebben we besloten om dit ook zo op de monitor machine te doen.
 
-5. De video toont dan hoe we de virtuele machine kunnen converteren naar het vagrant box formaat met het commando:
+5. ### Conversie
+
+    De video toont dan hoe we de virtuele machine kunnen converteren naar het vagrant box formaat met het commando:
 
     ```
     $ vagrant package --base monitor --output monitor.box
