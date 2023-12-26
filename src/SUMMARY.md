@@ -1,10 +1,10 @@
 # Summary
 
-[Introduction](introduction.md)
+[Introductie](introductie.md)
 
-# User Guide
+# Installatie
 
-- [Installation](test.md)
+- [Installation](box.md)
 - [Reading Books](anothertest.md)
 - [Creating a Book](guide/creating.md)
 

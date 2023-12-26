@@ -34,10 +34,84 @@ In de video legde men uit, dat voor een succesvol werkende box aan te maken wij 
 3. Nu kunnen wij verder met het voorbereiden van de machine zodat deze kan geconverteerd worden naar een bruikbare, werkende box. Hiervoor konden we verder de video volgen:
 
     - Voor de eerste settings moeten we overschakelen naar de root user met het commando "sudo su -" We zullen voor het paswoord gevraagd worden, dus vagrant.
-    - Hij raad aan om de "hostnamectl", "timedatectl" en "localectl" uit te voeren om na te gaan of de instellingen qua hostnaam, tijd en locatie correct zijn. Deze kunnen nog veranderd worden indien nodig.
+    - Hij raad aan om de commando's hostnamectl", "timedatectl" en "localectl uit te voeren om na te gaan of de instellingen qua hostnaam, tijd en locatie correct zijn. Deze kunnen nog veranderd worden indien nodig.
     - Vervolgens kijken we best na of het "sudo" package geïnstalleerd is door "apt install sudo" uit te voeren.
-    - Dan moeten we een configuratie file aanmaken met gebruik van visudo, de video legt uit dat deze plugin file moet aangemaakt worden in de /etc/sudoers.d/ folder met de naam "vagrant.tmp" (/etc/sudoers.d/vagrant.tmp). Hij gebruikt hiervoor het commando "visudo -f /etc/sudoers.d/vagrant.tmp".
-    Dit bestand bestaat nog niet maar door dit commando openen wij een nieuw bestand met de naam vagrant.tmp met de nano tekst editor. Wij moeten slechts 1 lijn tekst in dit bestand steken:
+    - Dan moeten we een configuratie file aanmaken met gebruik van visudo, de video legt uit dat deze plugin file moet aangemaakt worden in de /etc/sudoers.d/ folder met de naam "vagrant.tmp" (/etc/sudoers.d/vagrant.tmp). Hij gebruikt hiervoor het commando:
+        
+        ```
+        $ visudo -f /etc/sudoers.d/vagrant.tmp
+        ```
+        Dit bestand bestaat nog niet maar door dit commando openen wij een nieuw bestand met de naam vagrant.tmp met de nano tekst editor. Wij moeten slechts 1 lijn tekst in dit bestand steken en het dan opslaan:
+        
+        ```
+        vagrant ALL=(root) NOPASSWD: ALL
+        ```
+
+    - Vervolgens moeten we de vagrant user nog toevoegen aan de sudo groep, dit kunnen we doen met het volgende commando:
+        
+        ```
+         $ usermod -aG sudo vagrant
+         ```
     
-            `vagrant ALL=(root) NOPASSWD: ALL`
-    - 
+    - Hierna moeten we terug naar de vagrant gebruiker overschakelen voor het downloaden van de publieke ssh sleutel voor deze gebruiker dit kunnen we doen met het commando "su - vagrant"
+    - We zitten dan in de homefolder van de vagrant gebruiker (/home/vagrant) waar we dan de .ssh folder kunnen aanmaken en de publieke sleutel van de vagrant gebruiker kunnen downloaden met de volgende commando's:
+
+        ```
+        $ mkdir -m 700 .ssh
+        $ wget -O .ssh/authorized_keys https://raw.$ githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
+        $ cat .ssh/authorized_keys
+        $ chmod 600 .ssh/authorized_keys
+        ```
+    - We kunnen dan de historiek van de vagrant gebruiker commando's uitwissen met door het history -c commando uit te voeren en terug overschakelen naar de root user.
+    - Nu moeten we over gaan op het installeren van de virtual box guest additions maar hiervoor moeten we eerst nog enkele packages installeren. We installeren de nodige packets met het commando:
+
+        ```
+        $ apt install -y dkms linux-headers-$(uname -r) build-essential
+        ```
+        Wanneer de installatie van deze packages is afgelopen kunnen we de machine afsluiten met het "poweroff" commando.
+    - Nu kunnen wij in virtualbox in de settings gaan van deze specifieke machine en bij storage onder de Controller: IDE bij Optical Drive op het cd logo klikken en dan uit het dropdown menu de VBoxGuessAdditions.iso kiezen.
+    - Nu moeten we enkel nog de machine terug opstarten om de Guest additions te installeren.
+    - Eenmaal opgestart switchen we weer over naar de root user met het commando "sudo su -"
+    - We moeten dan de Optical Drive met de Guest additions iso mounten en installeren met de commando's:
+
+        ```
+        $ mount /dev/cdrom /mnt
+        $ /mnt/VBoxLinuxAdditions.run
+        ```
+    - Dit is alles wat nodig is om de basis template van de machine aan te maken en we kunnen nu overgaan tot het converteren van deze machine naar het vagrant box formaat.
+
+4. Dit is echter niet het moment waarop wij deze machine in box formaat converteren, wij wilden eerst de nodige applicaties installeren op deze machine, in ons geval dus nog de Grafana applicatie zodat wij de gescrapete metrics kunnen visualiseren.
+    - Hiervoor starten wij de machine terug op en op de root user voeren we de volgende commando's uit:
+
+        ```
+        $ apt-get install -y adduser libfontconfig1 musl
+        $ wget https://dl.grafana.com/enterprise/release/grafana-enterprise_10.2.3_amd64.deb
+        $ dpkg -i grafana-enterprise_10.2.3_amd64.deb
+        ```
+    - Hierna kunnen we testen of Grafana correct is geïnstalleerd met de volgende commando's:
+
+        ```
+        $ systemctl start grafana-server
+        $ systemctl status grafana-server
+        ```
+    Dit is alles wat wij voor de monitoring box moeten voorbereiden aangezien Prometheus bij de installatie van de virtuele machine als is toegevoegd. Wij kunnen de Node Exporter module van Prometheus ook aan deze machine toevoegen zodat de machine zichzelf kan monitoren maar aangezien de installatie van Node Exporter op de slave machine via de Vagrantfile gebeurt (dit omdat we een al bestaande ubuntu box van vagrant cloud gebruiken) hebben we besloten om dit ook zo op de monitor machine te doen.
+
+5. De video toont dan hoe we de virtuele machine kunnen converteren naar het vagrant box formaat met het commando:
+
+    ```
+    $ vagrant package --base monitor --output monitor.box
+    ```
+    Mijn vm had de naam monitor dus dit gebruiken wij als de base en de geconverteerde box zal dus monitor.box noemen. Je kan hier eender welke naam kiezen maar het moet wel op .box eindigen. Je kan dit commando van eender waar uitvoeren normaal gezien maar je kan best voor alle zekerheid in de folder gaan waar de virtuele machine zich bevind.
+
+    Hierna heb je een vagrant box die je dan kan uploaden naar je eigen vagrant cloud. Na het inloggen op je account kan een nieuwe box toevoegen er een naam aangeven.
+
+    Hierna krijg je de mogelijkheid om een provider toe te voegen en kies je de volgende opties:
+
+    ```
+    Provider: Virtualbox
+    File hosting: Upload to Vagrant Cloud
+    Box Architecture: unknown
+    ```
+    Je kan eventueel een hash maken van je vagrant box en dit toevoegen bij checksum maar dit is niet noodzakelijk.
+
+    En nu kan men deze box gebruiken in alle toekomstige Vagrantfile en kunnen wij overgaan tot het aanmaken van de Vagrantfile.
