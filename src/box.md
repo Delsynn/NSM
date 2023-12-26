@@ -68,13 +68,13 @@ In de video legde men uit, dat voor een succesvol werkende box aan te maken wij 
         $ cat .ssh/authorized_keys
         $ chmod 600 .ssh/authorized_keys
         ```
-    - We kunnen dan de historiek van de vagrant gebruiker commando's uitwissen met door het history -c commando uit te voeren en terug overschakelen naar de root user.
+    - We kunnen dan de historiek van de vagrant gebruiker commando's uitwissen  door het history -c commando uit te voeren en terug overschakelen naar de root user.
     - Nu moeten we over gaan op het installeren van de virtual box guest additions maar hiervoor moeten we eerst nog enkele packages installeren. We installeren de nodige packets met het commando:
 
         ```
         $ apt install -y dkms linux-headers-$(uname -r) build-essential
         ```
-        Wanneer de installatie van deze packages is afgelopen kunnen we de machine afsluiten met het "poweroff" commando.
+      Wanneer de installatie van deze packages is afgelopen kunnen we de machine afsluiten met het "poweroff" commando.
     - Nu kunnen wij in virtualbox in de settings gaan van deze specifieke machine en bij storage onder de Controller: IDE bij Optical Drive op het cd logo klikken en dan uit het dropdown menu de VBoxGuessAdditions.iso kiezen.
     - Nu moeten we enkel nog de machine terug opstarten om de Guest additions te installeren.
     - Eenmaal opgestart switchen we weer over naar de root user met het commando "sudo su -"
