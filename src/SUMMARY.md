@@ -1,12 +1,15 @@
-# Summary
+# Introductie
 
 [Introductie](introductie.md)
 
 # Installatie
 
-- [Aanmaak Vagrant Box](box.md)
-- [Reading Books](anothertest.md)
-- [Creating a Book](guide/creating.md)
+- [Aanmaken monitor box](box.md)
+    - [Aanmaak VM](https://delsynn.github.io/NSM/box.html#aanmaak-vm)
+    - [Installatie VM](https://delsynn.github.io/NSM/box.html#installatie-vm)
+    - [Voorbereiding conversie](https://delsynn.github.io/NSM/box.html#voorbereiding-conversie)
+    - [Installatie applicaties](https://delsynn.github.io/NSM/box.html#applicaties)
+    - [Conversie](https://delsynn.github.io/NSM/box.html#conversie)
 
 # Reference Guide
 
