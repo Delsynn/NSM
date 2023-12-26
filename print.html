@@ -336,83 +336,83 @@ Box Architecture: unknown
           vb.customize [&quot;modifyvm&quot;, :id, &quot;--uartmode1&quot;, &quot;file&quot;, File::NULL]
           vb.gui = true
           vb.memory = &quot;2048&quot;
-        vb.cpus = 2
+          vb.cpus = 2
+        end
+        master.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
+          echo &quot;Running shell commands on master...&quot;
+          sudo snap start prometheus.prometheus
+          sudo cp -f /home/vagrant/prometheus.yml /var/snap/prometheus/current
+          sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
+          sudo snap restart prometheus
+          sudo systemctl enable grafana-server
+          sudo systemctl start grafana-server
+          cd /tmp
+          wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+          tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
+          sudo useradd -rs /bin/false node_exporter
+          sudo systemctl daemon-reload
+          sudo systemctl start node_exporter
+          sudo systemctl enable node_exporter
+        SHELL
       end
-      master.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
-        echo &quot;Running shell commands on master...&quot;
-        sudo snap start prometheus.prometheus
-        sudo cp -f /home/vagrant/prometheus.yml /var/snap/prometheus/current
-        sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
-        sudo snap restart prometheus
-        sudo systemctl enable grafana-server
-        sudo systemctl start grafana-server
-        cd /tmp
-        wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
-        tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
-        sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
-        sudo useradd -rs /bin/false node_exporter
-        sudo systemctl daemon-reload
-        sudo systemctl start node_exporter
-        sudo systemctl enable node_exporter
-      SHELL
-    end
 
-    # Slave machine 1
-    config.vm.define &quot;slave1&quot; do |slave1|
-      slave1.vm.box = &quot;bento/ubuntu-16.04&quot;
-      slave1.vm.network &quot;private_network&quot;, ip: &quot;192.168.50.5&quot;
-      slave1.vm.synced_folder &quot;./configs&quot;, &quot;/home/vagrant&quot;
-      slave1.vm.provider &quot;virtualbox&quot; do |vb|
-        vb.customize [&quot;modifyvm&quot;, :id, &quot;--cableconnected1&quot;, &quot;on&quot;]
-        vb.customize [&quot;modifyvm&quot;, :id, &quot;--uart1&quot;, &quot;0x3F8&quot;, &quot;4&quot;]
-        vb.customize [&quot;modifyvm&quot;, :id, &quot;--uartmode1&quot;, &quot;file&quot;, File::NULL]
-        vb.gui = false
-        vb.memory = &quot;2048&quot;
-        vb.cpus = 2
+      # Slave machine 1
+      config.vm.define &quot;slave1&quot; do |slave1|
+        slave1.vm.box = &quot;bento/ubuntu-16.04&quot;
+        slave1.vm.network &quot;private_network&quot;, ip: &quot;192.168.50.5&quot;
+        slave1.vm.synced_folder &quot;./configs&quot;, &quot;/home/vagrant&quot;
+        slave1.vm.provider &quot;virtualbox&quot; do |vb|
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--cableconnected1&quot;, &quot;on&quot;]
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--uart1&quot;, &quot;0x3F8&quot;, &quot;4&quot;]
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--uartmode1&quot;, &quot;file&quot;, File::NULL]
+          vb.gui = false
+          vb.memory = &quot;2048&quot;
+          vb.cpus = 2
+        end
+        slave1.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
+          echo &quot;Running shell commands on slave1...&quot;
+          sudo apt-get update
+          sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
+          cd /tmp
+          sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
+          sudo useradd -rs /bin/false node_exporter
+          sudo systemctl daemon-reload
+          sudo systemctl start node_exporter
+          sudo systemctl enable node_exporter
+        SHELL
       end
-      slave1.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
-        echo &quot;Running shell commands on slave1...&quot;
-        sudo apt-get update
-        sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
-        cd /tmp
-        sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
-        sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
-        sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
-        sudo useradd -rs /bin/false node_exporter
-        sudo systemctl daemon-reload
-        sudo systemctl start node_exporter
-        sudo systemctl enable node_exporter
-      SHELL
-    end
 
-    # Slave machine 2
-    config.vm.define &quot;slave2&quot; do |slave2|
-      slave2.vm.box = &quot;bento/ubuntu-16.04&quot;
-      slave2.vm.network &quot;private_network&quot;, ip: &quot;192.168.50.6&quot;
-      slave2.vm.synced_folder &quot;./configs&quot;, &quot;/home/vagrant&quot;
-      slave2.vm.provider &quot;virtualbox&quot; do |vb|
-        vb.customize [&quot;modifyvm&quot;, :id, &quot;--cableconnected1&quot;, &quot;on&quot;]
-        vb.customize [&quot;modifyvm&quot;, :id, &quot;--uart1&quot;, &quot;0x3F8&quot;, &quot;4&quot;]
-        vb.customize [&quot;modifyvm&quot;, :id, &quot;--uartmode1&quot;, &quot;file&quot;, File::NULL]
-        vb.gui = false
-        vb.memory = &quot;2048&quot;
-        vb.cpus = 2
+      # Slave machine 2
+      config.vm.define &quot;slave2&quot; do |slave2|
+        slave2.vm.box = &quot;bento/ubuntu-16.04&quot;
+        slave2.vm.network &quot;private_network&quot;, ip: &quot;192.168.50.6&quot;
+        slave2.vm.synced_folder &quot;./configs&quot;, &quot;/home/vagrant&quot;
+        slave2.vm.provider &quot;virtualbox&quot; do |vb|
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--cableconnected1&quot;, &quot;on&quot;]
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--uart1&quot;, &quot;0x3F8&quot;, &quot;4&quot;]
+          vb.customize [&quot;modifyvm&quot;, :id, &quot;--uartmode1&quot;, &quot;file&quot;, File::NULL]
+          vb.gui = false
+          vb.memory = &quot;2048&quot;
+          vb.cpus = 2
+        end
+        slave2.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
+          echo &quot;Running shell commands on slave2...&quot;
+          sudo apt-get update
+          sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
+          cd /tmp
+          sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
+          sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
+          sudo useradd -rs /bin/false node_exporter
+          sudo systemctl daemon-reload
+          sudo systemctl start node_exporter
+          sudo systemctl enable node_exporter
+        SHELL
       end
-      slave2.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
-        echo &quot;Running shell commands on slave2...&quot;
-        sudo apt-get update
-        sudo cp -f /home/vagrant/node_exporter.service /etc/systemd/system
-        cd /tmp
-        sudo wget https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
-        sudo tar xvfz node_exporter-1.7.0.linux-amd64.tar.gz
-        sudo mv node_exporter-1.7.0.linux-amd64/node_exporter /usr/local/bin/
-        sudo useradd -rs /bin/false node_exporter
-        sudo systemctl daemon-reload
-        sudo systemctl start node_exporter
-        sudo systemctl enable node_exporter
-      SHELL
     end
-  end
 </code></pre>
 <p>Bij de monitoring machine (master) kan men zien dat wij onze zelfgemaakte box gaan downloaden:</p>
 <pre><code>master.vm.box = &quot;delsynn/ubuntuliveprometheus&quot;
