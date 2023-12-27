@@ -1,3 +1,6 @@
+![Virtualbox logo](virtualbox.png)
+
+
 # Creatie van de monitoring box
 
 Bij het creëren van een Vagrant box begint men bij het opzetten van een virtuele machine, hiervoor hadden wij gekozen voor het gebruik van de Ubuntu Server ISO die we hebben gedownload van de officiële [site](https://ubuntu.com/download/server).

@@ -1,3 +1,6 @@
+![Vagrant logo](vagrant.png)
+
+
 # Aanmaken van de Vagrantfile
 
 Nu wij de monitoring box hebben opgeladen op Vagrant Cloud kunnen wij deze gebruiken in de aanmaak van onze Vagrantfile.
