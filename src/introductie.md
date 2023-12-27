@@ -1,3 +1,6 @@
+![Prometheus Logo](prometheus.png)
+
+
 # Introductie
 
 Wij hebben gekozen om een monitoring omgeving op te zetten, volledig via het gebruik van Vagrant boxes.
