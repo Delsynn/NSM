@@ -180,7 +180,8 @@
 <p>Deze omgeving omvat een monitor box die twee slave boxes monitored met gebruik van Prometheus.</p>
 <p>Iets waarmee wij nog niet geëxperimenteerd hadden was het volledig opzetten van onze eigen box, dus wij besloten dan ook hiermee aan de slag te gaan.</p>
 <p>Onze keuze ging dus naar een Ubuntu Live server box die we zelf in elkaar hebben gestoken, die we dan gebruiken om twee slaves nodes te monitoren. Voor deze hebben we een generieke Ubuntu box gebruikt.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="creatie-van-de-monitoring-box"><a class="header" href="#creatie-van-de-monitoring-box">Creatie van de monitoring box</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><p><img src="virtualbox.png" alt="Virtualbox logo" /></p>
+<h1 id="creatie-van-de-monitoring-box"><a class="header" href="#creatie-van-de-monitoring-box">Creatie van de monitoring box</a></h1>
 <p>Bij het creëren van een Vagrant box begint men bij het opzetten van een virtuele machine, hiervoor hadden wij gekozen voor het gebruik van de Ubuntu Server ISO die we hebben gedownload van de officiële <a href="https://ubuntu.com/download/server">site</a>.</p>
 <p>De volgende stap was onderzoeken hoe het aanmaken van Vagrant box juist in zijn werking gaat, na wat opzoekwerk stuitten we op de volgende zeer behulpzame <a href="https://www.youtube.com/watch?v=Wqtlj9osK0g">video</a>.</p>
 <p>In de video legde men uit, dat voor een succesvol werkende box aan te maken wij de volgende zaken moesten doen:</p>
@@ -318,7 +319,8 @@ Box Architecture: unknown
 <p>En nu kan men deze box gebruiken in alle toekomstige Vagrantfile en kunnen wij overgaan tot het aanmaken van de Vagrantfile.</p>
 </li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="aanmaken-van-de-vagrantfile"><a class="header" href="#aanmaken-van-de-vagrantfile">Aanmaken van de Vagrantfile</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><p><img src="vagrant.png" alt="Vagrant logo" /></p>
+<h1 id="aanmaken-van-de-vagrantfile"><a class="header" href="#aanmaken-van-de-vagrantfile">Aanmaken van de Vagrantfile</a></h1>
 <p>Nu wij de monitoring box hebben opgeladen op Vagrant Cloud kunnen wij deze gebruiken in de aanmaak van onze Vagrantfile.</p>
 <p>Om de volledige opzet te laten werken zijn we na veel testen en aanpassen van de Vagrantfile (syntax of lijnen toevoegen) uitgekomen op de volgende &quot;code&quot;:</p>
 <pre><code>    Vagrant.configure(&quot;2&quot;) do |config|
